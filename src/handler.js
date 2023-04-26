@@ -15,25 +15,30 @@ const addBookHandler = (request, h) => {
     summary,
     publisher,
     id,
+    pageCount,
+    readPage,
+    finished,
+    reading,
     insertedAt,
     updatedAt,
   };
 
   books.push(newBook);
 
-  if(name === undefined){
+  if (name === undefined) {
     const response = h.response({
       status: 'fail',
-      message: "Gagal menambahkan buku. Mohon isi nama buku"
-    })
-    response.code(400)
-    return response
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+    });
+    response.code(400);
+    return response;
   }
 
   if (pageCount < readPage) {
     const response = h.response({
       status: 'fail',
-      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+      message:
+        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
     });
     response.code(400);
 
@@ -50,16 +55,45 @@ const addBookHandler = (request, h) => {
         bookId: id,
       },
     });
-    response.code(201)
-    return response
+    response.code(201);
+    return response;
   }
 
   const response = h.response({
     status: 'fail',
-    message: 'Buku gagal ditambahkan'
-  })
-  response.code(500)
-  return response
+    message: 'Buku gagal ditambahkan',
+  });
+  response.code(500);
+  return response;
 };
 
-module.exports = { addBookHandler };
+const getAllBooksHandler = () => ({
+  status: 'success',
+  data: {
+    books,
+  },
+});
+
+const getBooksByIdHandler = (request, h) => {
+  const { id } = request.params;
+  const bookId = books.filter((b) => b.id === id)[0];
+
+  if (bookId !== undefined) {
+    return {
+      status: 'success',
+      data: {
+        bookId,
+      },
+    };
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
+  });
+  response.code(404);
+
+  return response;
+}
+
+module.exports = { addBookHandler, getAllBooksHandler, getBooksByIdHandler };
