@@ -21,6 +21,25 @@ const addBookHandler = (request, h) => {
 
   books.push(newBook);
 
+  if(name === undefined){
+    const response = h.response({
+      status: 'fail',
+      message: "Gagal menambahkan buku. Mohon isi nama buku"
+    })
+    response.code(400)
+    return response
+  }
+
+  if (pageCount < readPage) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+    response.code(400);
+
+    return response;
+  }
+
   const isSuccess = books.filter((book) => book.id === id).length > 0;
 
   if (isSuccess) {
