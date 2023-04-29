@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
@@ -85,20 +86,18 @@ const getAllBooksHandler = (request, h) => {
   let filteredBooks = books;
 
   if (name !== undefined) {
-    filteredBooks = filteredBooks.filter((book) =>
-      book.name.toLowerCase().includes(name.toLowerCase())
-    );
+    filteredBooks = filteredBooks.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
   }
 
   if (reading !== undefined) {
     filteredBooks = filteredBooks.filter(
-      (book) => book.reading === !!Number(reading)
+      (book) => book.reading === !!Number(reading),
     );
   }
 
   if (finished !== undefined) {
     filteredBooks = filteredBooks.filter(
-      (book) => book.finished === !!Number(finished)
+      (book) => book.finished === !!Number(finished),
     );
   }
 
